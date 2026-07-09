@@ -28,15 +28,14 @@ app.get('/fruits', async (req,res)=>{
 
     fruitData.name = "banana"
     fruitData.isReadyToEat = true
-    // use a mango method to add it to the DB
-//=======================================================
-    // await Fruit.create(fruitData)
-    let craetFruit = await Fruit.create(fruitData)
+    // use a mango method to find sertan some thing it to the DB
+
+    let notReady = await Fruit.find({ isReadyToEat: 'true'})
+
+
 
     // view the created fruit
-//============================================================
-    // res.send(Fruit)
-    res.send(craetFruit)
+    res.send(notReady)
 })
 
 
@@ -47,6 +46,7 @@ app.listen(3000, function(){
 
 
 // code Graveyard===========================================
+
 // crat fruit object
 //     const fruitData = {}
 
@@ -56,3 +56,22 @@ app.listen(3000, function(){
 // //=======================================================
 //     // await Fruit.create(fruitData)
 //     let craetFruit = await Fruit.create(fruitData)
+
+//==========================================================
+ // use a mango method to find and show all data 
+//  let allFruit = await Fruit.find() ==t=
+
+//==========================================================
+// use a mango method to find sertan some thing it to the DB
+
+    // let allBanan = await Fruit.find({ name: 'banana'})
+
+    // // view the created fruit
+    // res.send(allBanan)
+
+    //======================
+
+    // let notReady = await Fruit.find({ isReadyToEat: 'true'})
+
+    // // view the created fruit
+    // res.send(notReady)
