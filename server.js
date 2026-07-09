@@ -13,6 +13,7 @@ mongoose.connection.on('connected', () =>{
 })
 
 const Fruit = require('./models/fruit.js')
+const { name } = require('ejs')
 
 app.use(morgan('dev'))
 
@@ -28,14 +29,12 @@ app.get('/fruits', async (req,res)=>{
 
     fruitData.name = "banana"
     fruitData.isReadyToEat = true
-    // use a mango method to find sertan some thing it to the DB
+    // use a mango method to find first thing and updated to diffrent value
 
-    let notReady = await Fruit.find({ isReadyToEat: 'true'})
-
-
+    let deleteddFruit = await Fruit.findById("6a4f6a0fea86c553a91a4600", {name: 'pinapple'}, {isReadyToEat: false} , {new:true})
 
     // view the created fruit
-    res.send(notReady)
+    res.send(deleteddFruit)
 })
 
 
@@ -75,3 +74,18 @@ app.listen(3000, function(){
 
     // // view the created fruit
     // res.send(notReady)
+
+//=========================================================
+    // use a mango method to find first thing and updated to diffrent value
+
+    // let updatedFruit = await Fruit.findByIdAndUpdate("6a4f6a0fea86c553a91a4600", {name: 'pinapple'}, {isReadyToEat: false} , {new:true})
+
+    // // view the created fruit
+    // res.send(updatedFruit)
+    //=====================================================
+    // to fib something by Id
+
+    // let deleteddFruit = await Fruit.findById("6a4f6a0fea86c553a91a4600", {name: 'pinapple'}, {isReadyToEat: false} , {new:true})
+
+    // // view the created fruit
+    // res.send(deleteddFruit)
