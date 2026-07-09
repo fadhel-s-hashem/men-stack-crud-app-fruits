@@ -13,8 +13,11 @@ mongoose.connection.on('connected', () =>{
 })
 
 const Fruit = require('./models/fruit.js')
+
+
 const { name } = require('ejs')
 
+app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'))
 
 
@@ -22,21 +25,30 @@ app.get('/', async (req, res) => {
     res.render('home.ejs')
 })
 
-//this rote will change often
-app.get('/fruits', async (req,res)=>{
-// crat fruit object
-    const fruitData = {}
-
-    fruitData.name = "banana"
-    fruitData.isReadyToEat = true
-    // use a mango method to find first thing and updated to diffrent value
-
-    let deleteddFruit = await Fruit.findById("6a4f6a0fea86c553a91a4600", {name: 'pinapple'}, {isReadyToEat: false} , {new:true})
-
-    // view the created fruit
-    res.send(deleteddFruit)
+//(form for crating fruit) (just diplay)
+app.get('/fruits/new', async (req,res)=>{
+    res.render('new.ejs')
 })
 
+// post /fruits (creat fruit in database)
+app.post('/fruits', async (req,res) =>{
+
+    // fruitData object should match Fruit model
+    
+    const fruitData = {}
+    fruitData.name = req.body.name
+
+    if( req.body.isReadyToEat === 'on'){
+        fruitData.isReadyToEat = true
+    } else {
+        fruitData.isReadyToEat = false
+    }
+    // fruitData.isReadyToEat = req.body.isReadyToEat
+    
+    let craetFruit = await Fruit.create(fruitData)
+
+    res.send(craetFruit)
+})
 
 app.listen(3000, function(){
     console.log('Listening on port 3000')
