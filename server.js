@@ -3,6 +3,7 @@ const express = require('express')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 const dns = require('node:dns')
+const path = require('path')
 dns.setServers(['8.8.8.8', '1.1.1.1'])
 
 const app = express()
@@ -18,8 +19,10 @@ const Fruit = require('./models/fruit.js')
 const { name } = require('ejs')
 
 app.use(express.urlencoded({ extended: false }));
+
 app.use(morgan('dev'))
 
+app.use(express.static(path.join(__dirname, "public")))
 
 app.get('/', async (req, res) => {
     res.render('home.ejs')
@@ -47,7 +50,7 @@ app.post('/fruits', async (req,res) =>{
     
     let craetFruit = await Fruit.create(fruitData)
 
-    res.send(craetFruit)
+    res.redirect('/')
 })
 
 app.listen(3000, function(){
