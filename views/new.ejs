@@ -1,22 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+<%- include('./partials/nav') %>
+
 <body>
     <h1> creat new fruit </h1>
     <form action="/fruits" method="post">
         <label for="name">Name:</label> 
         <input type="text" id="name" name="name"/>
 
+        <div class="checkbox-div">
         <label for="isReadyToEat">      Ready to eat?</label>
         <input type="checkbox" name="isReadyToEat" id="isReadyToEat">
+        
+    </div>
+    <button type="submit"> Add Fruit</button>
 
-        <br>
-        <br>
-        <button type="submit"> Add Fruit</button>
 
     </form>
     
