@@ -50,7 +50,17 @@ app.post('/fruits', async (req,res) =>{
     
     let craetFruit = await Fruit.create(fruitData)
 
-    res.redirect('/')
+    res.redirect('/fruits')
+})
+
+// GET all fruit /fruits - index route
+app.get('/fruits' , async (req,res)=> {
+    const allFruits = await Fruit.find()
+    // console.log(allFruits) =this to show in terminal
+
+    res.render('index.ejs' ,{
+        allFruits: allFruits
+    })
 })
 
 app.listen(3000, function(){
@@ -61,7 +71,7 @@ app.listen(3000, function(){
 
 // code Graveyard===========================================
 
-// crat fruit object
+// creat fruit object
 //     const fruitData = {}
 
 //     fruitData.name = "banana"
@@ -73,7 +83,7 @@ app.listen(3000, function(){
 
 //==========================================================
  // use a mango method to find and show all data 
-//  let allFruit = await Fruit.find() ==t=
+//  let allFruit = await Fruit.find() 
 
 //==========================================================
 // use a mango method to find sertan some thing it to the DB
