@@ -64,7 +64,7 @@ app.get('/fruits' , async (req,res)=> {
     })
 })
 
-//  show route 
+//  show route = and delete
 app.get('/fruits/:fruitID' , async (req,res)=> {
     let foundFruit = await Fruit.findById(req.params.fruitID)
     
@@ -79,9 +79,25 @@ app.delete('/fruits/:fruitID' , async (req,res) => {
 
 })
 
+// GET the edit form 
+app.get('/fruits/:fruitID/edit', async (req,res) => {
+    let updatedFruit = await Fruit.findById(req.params.fruitID)
+    console.log(updatedFruit)
+    res.render('edit.ejs' , {
+        foundFruit :updatedFruit
+    })
+})
+
+// pUT- actually update fruit in the databace
+app.put('/fruits/:fruitID',async (req,res)=> {
+    let updatedFruit = await Fruit.findByIdAndUpdate(req.params.fruitID, {name: 'lemon'}, {new:true})
+
+})
+
 app.listen(3000, function(){
     console.log('Listening on port 3000')
 })
+
 
 
 

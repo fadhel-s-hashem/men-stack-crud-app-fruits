@@ -8,6 +8,7 @@
 <%- include('./partials/nav') %>
 <body>
     <h1> <%= foundFruit.name%> </h1>
+    <form action="/fruits/<%= foundFruit._id%>?_method=DELETE" method="post">
 
     <% if (foundFruit.isReadyToEat === true) { %>
         <p> This fruit is ready to eat </p>
@@ -15,7 +16,6 @@
          <p> This fruit isn't ready to eat 😣</p>
   <%  }%>
 
-<form action="/fruits/<%= foundFruit._id%>?_method=DELETE" method="post">
   <button type="submit"> Delete</button>
 </form>    
     
