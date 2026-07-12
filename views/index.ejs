@@ -10,9 +10,10 @@
     <h1> All Fruits</h1>
 <ul>
     <% allFruits.forEach((item)=>{  %>
-        
+        <a href="/fruits/<%= item._id%>">
        <li class="allFruitName"> <%= item.name%></li>
-       <li class="allFruitName"> <%= item.isReadyToEat%></li>
+       <!-- <li class="allFruitName"> <%= item._id%></li> -->
+    </a>
        <hr>
         
    <%})%>

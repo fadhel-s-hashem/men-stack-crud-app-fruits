@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const mongoose = require('mongoose')
 const dns = require('node:dns')
 const path = require('path')
+const methodOverride = require('method-override')
 dns.setServers(['8.8.8.8', '1.1.1.1'])
 
 const app = express()
@@ -14,15 +15,15 @@ mongoose.connection.on('connected', () =>{
 })
 
 const Fruit = require('./models/fruit.js')
-
-
 const { name } = require('ejs')
-
 app.use(express.urlencoded({ extended: false }));
+
+app.use(methodOverride('_method'))
 
 app.use(morgan('dev'))
 
 app.use(express.static(path.join(__dirname, "public")))
+//=============================================================
 
 app.get('/', async (req, res) => {
     res.render('home.ejs')
@@ -61,6 +62,21 @@ app.get('/fruits' , async (req,res)=> {
     res.render('index.ejs' ,{
         allFruits: allFruits
     })
+})
+
+//  show route 
+app.get('/fruits/:fruitID' , async (req,res)=> {
+    let foundFruit = await Fruit.findById(req.params.fruitID)
+    
+    res.render('Show.ejs' , {
+        foundFruit :foundFruit
+    })
+})
+
+app.delete('/fruits/:fruitID' , async (req,res) => {
+    let deleteFruit = await Fruit.findByIdAndDelete(req.params.fruitID)
+    res.redirect('/fruits')
+
 })
 
 app.listen(3000, function(){
@@ -108,9 +124,8 @@ app.listen(3000, function(){
     // // view the created fruit
     // res.send(updatedFruit)
     //=====================================================
-    // to fib something by Id
+    // to finb something by Id
 
-    // let deleteddFruit = await Fruit.findById("6a4f6a0fea86c553a91a4600", {name: 'pinapple'}, {isReadyToEat: false} , {new:true})
+    // let foundFruit = await Fruit.findById("6a4f6a0fea86c553a91a4600", {name: 'pinapple'}, {isReadyToEat: false} , {new:true})
 
-    // // view the created fruit
-    // res.send(deleteddFruit)
+    // res.send(foundFruit)
