@@ -38,7 +38,6 @@ app.get('/fruits/new', async (req,res)=>{
 app.post('/fruits', async (req,res) =>{
 
     // fruitData object should match Fruit model
-    
     const fruitData = {}
     fruitData.name = req.body.name
 
@@ -90,13 +89,24 @@ app.get('/fruits/:fruitID/edit', async (req,res) => {
 
 // pUT- actually update fruit in the databace
 app.put('/fruits/:fruitID',async (req,res)=> {
-    let updatedFruit = await Fruit.findByIdAndUpdate(req.params.fruitID, {name: 'lemon'}, {new:true})
+    const fruitedited = {}
+    fruitedited.name = req.body.name
 
+    if( req.body.isReadyToEat === 'on'){
+        fruitedited.isReadyToEat = true
+    } else {
+        fruitedited.isReadyToEat = false
+    }
+
+    await Fruit.findByIdAndUpdate(req.params.fruitID, fruitedited, {new:true})
+res.redirect(`/fruits/${req.params.fruitID}`)
 })
 
 app.listen(3000, function(){
     console.log('Listening on port 3000')
 })
+
+// Im adding comment 👾 for mvc
 
 
 
