@@ -7,6 +7,8 @@ const path = require('path')
 const methodOverride = require('method-override')
 dns.setServers(['8.8.8.8', '1.1.1.1'])
 
+const fruitsCtr = require("./controllers/fruits.controllers.js")
+
 const app = express()
 
 mongoose.connect(process.env.MONGODB_URI)
@@ -30,77 +32,24 @@ app.get('/', async (req, res) => {
 })
 
 //(form for crating fruit) (just diplay)
-app.get('/fruits/new', async (req,res)=>{
-    res.render('new.ejs')
-})
+app.get('/fruits/new', fruitsCtr.showNewForm )
 
 // post /fruits (creat fruit in database)
-app.post('/fruits', async (req,res) =>{
-
-    // fruitData object should match Fruit model
-    const fruitData = {}
-    fruitData.name = req.body.name
-
-    if( req.body.isReadyToEat === 'on'){
-        fruitData.isReadyToEat = true
-    } else {
-        fruitData.isReadyToEat = false
-    }
-    // fruitData.isReadyToEat = req.body.isReadyToEat
-    
-    let craetFruit = await Fruit.create(fruitData)
-
-    res.redirect('/fruits')
-})
+app.post('/fruits', fruitsCtr.create )
 
 // GET all fruit /fruits - index route
-app.get('/fruits' , async (req,res)=> {
-    const allFruits = await Fruit.find()
-    // console.log(allFruits) =this to show in terminal
-
-    res.render('index.ejs' ,{
-        allFruits: allFruits
-    })
-})
+app.get('/fruits' , fruitsCtr.index)
 
 //  show route = and delete
-app.get('/fruits/:fruitID' , async (req,res)=> {
-    let foundFruit = await Fruit.findById(req.params.fruitID)
-    
-    res.render('Show.ejs' , {
-        foundFruit :foundFruit
-    })
-})
+app.get('/fruits/:fruitID' , fruitsCtr.show)
 
-app.delete('/fruits/:fruitID' , async (req,res) => {
-    let deleteFruit = await Fruit.findByIdAndDelete(req.params.fruitID)
-    res.redirect('/fruits')
-
-})
+app.delete('/fruits/:fruitID' ,fruitsCtr.deleteFruit )
 
 // GET the edit form 
-app.get('/fruits/:fruitID/edit', async (req,res) => {
-    let updatedFruit = await Fruit.findById(req.params.fruitID)
-    console.log(updatedFruit)
-    res.render('edit.ejs' , {
-        foundFruit :updatedFruit
-    })
-})
+app.get('/fruits/:fruitID/edit', fruitsCtr.edit)
 
 // pUT- actually update fruit in the databace
-app.put('/fruits/:fruitID',async (req,res)=> {
-    const fruitedited = {}
-    fruitedited.name = req.body.name
-
-    if( req.body.isReadyToEat === 'on'){
-        fruitedited.isReadyToEat = true
-    } else {
-        fruitedited.isReadyToEat = false
-    }
-
-    await Fruit.findByIdAndUpdate(req.params.fruitID, fruitedited, {new:true})
-res.redirect(`/fruits/${req.params.fruitID}`)
-})
+app.put('/fruits/:fruitID',fruitsCtr.update)
 
 app.listen(3000, function(){
     console.log('Listening on port 3000')
